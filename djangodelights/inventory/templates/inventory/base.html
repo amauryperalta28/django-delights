@@ -20,6 +20,10 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
+
+    {% block head %}
+
+    {% endblock %}
   </head>
   <body>
     <div class="container-scroller">
@@ -305,6 +309,9 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+            {% block content %}
+
+            {% endblock %}
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
