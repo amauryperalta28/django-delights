@@ -136,60 +136,35 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'index' %}">
+              <a class="nav-link" href="/">
                 <span class="menu-title">Home</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="{% url 'ingredients' %}" aria-expanded="false" aria-controls="forms">
+              <a class="nav-link" href="/ingredients">
                 <span class="menu-title">Ingredients</span>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
               </a>
-              <div class="collapse" id="forms">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="../../pages/forms/basic_elements.html">Form Elements</a>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="{% url 'menu' %}" aria-expanded="false" aria-controls="tables">
+              <a class="nav-link" href="/menu">
                 <span class="menu-title">Menu</span>
                 <i class="mdi mdi-table-large menu-icon"></i>
               </a>
-              <div class="collapse" id="tables">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="../../pages/tables/basic-table.html">Basic table</a>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="{% url 'purchases' %}" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Purchases</span>
+              <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">Sales</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
               </a>
-              <div class="collapse" id="icons">
+              <div class="collapse" id="purchases">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item">
-                    <a class="nav-link" href="../../pages/icons/font-awesome.html">Font Awesome</a>
+                    <a class="nav-link" href="/purchases/">Purchases</a>
                   </li>
-                </ul>
-              </div>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="{% url 'profit_revenue' %}" aria-expanded="false" aria-controls="charts">
-                <span class="menu-title">Profit and revenue</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-              </a>
-              <div class="collapse" id="charts">
-                <ul class="nav flex-column sub-menu">
                   <li class="nav-item">
-                    <a class="nav-link" href="../../pages/charts/chartjs.html">ChartJs</a>
+                    <a class="nav-link" href="/profit_revenue/">Profit and revenue</a>
                   </li>
                 </ul>
               </div>

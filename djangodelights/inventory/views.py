@@ -5,13 +5,13 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'inventory/index.html')
 
-def ingredients(request):
+def ingredients_list(request):
     return render(request, 'inventory/ingredients.html')
 
-def menu(request):
+def menuitem_list(request):
     return render(request, 'inventory/menu.html')
 
-def purchases(request):
+def purchases_list(request):
     return render(request, 'inventory/purchases.html')
 
 def profit_revenue(request):
