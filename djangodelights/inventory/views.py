@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from .forms import IngredientForm
 
-from .models import Ingredient
+from .models import Ingredient, MenuItem
 
 # Create your views here.
 
@@ -24,6 +24,11 @@ class IngredientsCreateView(CreateView):
     form_class = IngredientForm
     template_name = 'inventory/ingredient_create.html'
     success_url = reverse_lazy('ingredient_list')
+    
+class MenuItemListView(ListView):
+    model  = MenuItem
+    template_name = 'inventory/menu_item_list.html'
+    context_object_name = 'menu_item_list'
 
 def index(request):
     return render(request, 'inventory/index.html')

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h3 class="page-title"> Menu </h3>
+  <h3 class="page-title"> Menu </h3>
 </div>
 
 <div class="row">
@@ -19,11 +19,14 @@
             </tr>
           </thead>
           <tbody>
+            {% for item in menu_item_list %}
             <tr>
-              <td>#1</td>
-              <td>Django Djaffa Cake</td>
-              <td>8.25</td>
+              <td>{{item.id}}</td>
+              <td>{{item.title}}</td>
+              <td>{{item.price}}</td>
             </tr>
+            {% endfor %}
+
           </tbody>
         </table>
       </div>
