@@ -3,6 +3,14 @@
 {% block content %}
 <div class="page-header">
   <h3 class="page-title"> Menu </h3>
+  <nav aria-label="breadcrumb">
+    <form action="{% url 'menu_item_create' %}">
+      <button type="submit" class="btn btn-gradient-primary btn-rounded btn-fw">
+        Add Menu
+      </button>
+
+    </form>
+  </nav>
 </div>
 
 <div class="row">

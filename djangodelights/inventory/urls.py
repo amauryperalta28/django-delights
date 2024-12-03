@@ -7,6 +7,7 @@ urlpatterns = [
     path('ingredients/create/', views.IngredientsCreateView.as_view(), name='ingredient_create'),
     path('ingredients/<int:pk>/update/', views.IngredientsUpdateView.as_view(), name='ingredient_update'),
     path('menu/', views.MenuItemListView.as_view(), name='menu'),
+    path('menu/create/', views.MenuItemCreateView.as_view(), name="menu_item_create"),
     path('purchases/', views.purchases_list, name='purchases'),
     path('profit_revenue/', views.profit_revenue, name='profit_revenue'),
 ]

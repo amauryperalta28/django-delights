@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
-from .forms import IngredientForm
+from .forms import IngredientForm, MenuItemForm
 
 from .models import Ingredient, MenuItem
 
@@ -29,6 +29,12 @@ class MenuItemListView(ListView):
     model  = MenuItem
     template_name = 'inventory/menu_item_list.html'
     context_object_name = 'menu_item_list'
+
+class MenuItemCreateView(CreateView):
+    model = MenuItem
+    form_class = MenuItemForm
+    template_name = 'inventory/menu_item_create.html'
+    success_url = reverse_lazy('menu')
 
 def index(request):
     return render(request, 'inventory/index.html')
