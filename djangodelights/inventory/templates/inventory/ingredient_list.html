@@ -3,7 +3,10 @@
 {% block content %}
 
 <div class="page-header">
-    <h3 class="page-title"> Ingredients </h3>
+  <h3 class="page-title"> Ingredients </h3>
+  <nav aria-label="breadcrumb">
+
+  </nav>
 </div>
 
 <div class="row">
@@ -23,13 +26,14 @@
           </thead>
           <tbody>
             {% for ingredient in ingredient_list %}
-              <tr>
-                <td>{{ ingredient.name }}</td>
-                <td>{{ ingredient.price }}</td>
-                <td>{{ ingredient.unit }}</td>
-                <td>{{ ingredient.quantity }}</td>
-                <td>{{ ingredient.cost }}</td>
-              </tr>
+            <tr>
+              <td>{{ ingredient.name }}</td>
+              <td>{{ ingredient.price }}</td>
+              <td>{{ ingredient.unit }}</td>
+              <td>{{ ingredient.quantity }}</td>
+              <td>{{ ingredient.cost }}</td>
+              <td><a href="{% url 'ingredient_update' ingredient.pk %}">Edit</a></td>
+            </tr>
             {% endfor %}
           </tbody>
         </table>
