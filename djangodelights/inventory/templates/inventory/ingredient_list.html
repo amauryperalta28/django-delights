@@ -22,14 +22,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Orange jelly</td>
-              <td>0.03</td>
-              <td>grams</td>
-              <td>300</td>
-              <td>0.01</td>
-            </tr>
-
+            {% for ingredient in ingredient_list %}
+              <tr>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.price }}</td>
+                <td>{{ ingredient.unit }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.cost }}</td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
