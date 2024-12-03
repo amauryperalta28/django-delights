@@ -19,10 +19,11 @@ class IngredientsUpdateView(UpdateView):
     template_name = 'inventory/ingredient_update_form.html'
     success_url = reverse_lazy('ingredient_list')
 
-# class IngredientsCreateView(CreateView):
-#     model = Ingredient
-#     form_class = IngredientForm
-#     template_name = 'inventory/ingredient_create.html'
+class IngredientsCreateView(CreateView):
+    model = Ingredient
+    form_class = IngredientForm
+    template_name = 'inventory/ingredient_create.html'
+    success_url = reverse_lazy('ingredient_list')
 
 def index(request):
     return render(request, 'inventory/index.html')
