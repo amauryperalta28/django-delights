@@ -1,0 +1,62 @@
+{% extends 'inventory/base.html' %}
+{% block head %}
+<title>Create Menu Item</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="container mt-5">
+            <h1>Create Menu Item</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ menu_form.as_p }}
+                </div>
+                <h3>Ingredients</h3>
+                <table class="table">
+                    {{ formset.management_form }}
+                    <tbody id="formset-body">
+                        {% for form in formset %}
+                        <tr class="formset-row">
+                            <td>{{ form.ingredient }}</td>
+                            <td>{{ form.quantity }}</td>
+                            <td>
+                                {% if form.DELETE %}
+                                {{ form.DELETE }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" id="add-row" class="btn btn-secondary">Add Ingredient</button>
+                <button type="submit" class="btn btn-success">Save Menu Item</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const formsetBody = document.getElementById("formset-body");
+        const addRowButton = document.getElementById("add-row");
+
+        let formIdx = {{ formset.total_form_count| add: "0"
+    }};
+
+    addRowButton.addEventListener("click", function () {
+        const emptyForm = document.querySelector(".formset-row").outerHTML.replace(/__prefix__/g, formIdx);
+        formsetBody.insertAdjacentHTML("beforeend", emptyForm);
+        formIdx++;
+    });
+    });
+</script>
+{% endblock %}
