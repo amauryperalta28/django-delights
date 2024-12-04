@@ -43,7 +43,7 @@ class MenuItemCreateView(CreateView):
     
 class PurchasesListView(ListView):
     model = Purchase
-    template_name = 'inventory/purchases.html'
+    template_name = 'inventory/purchase_list.html'
     context_object_name = 'purchases'
 
 def index(request):
@@ -51,9 +51,6 @@ def index(request):
 
 def menuitem_list(request):
     return render(request, 'inventory/menu_item_list.html')
-
-def purchases_list(request):
-    return render(request, 'inventory/purchases.html')
 
 def profit_revenue(request):
     return render(request, 'inventory/profit_revenue.html')
