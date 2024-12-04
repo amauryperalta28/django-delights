@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from .forms import IngredientForm, MenuItemForm
 
 from .models import Ingredient, MenuItem
@@ -23,6 +23,11 @@ class IngredientsCreateView(CreateView):
     model = Ingredient
     form_class = IngredientForm
     template_name = 'inventory/ingredient_create.html'
+    success_url = reverse_lazy('ingredient_list')
+    
+class IngredientsDeleteView(DeleteView):
+    model = Ingredient
+    template_name = 'inventory/ingredient_delete.html'
     success_url = reverse_lazy('ingredient_list')
     
 class MenuItemListView(ListView):

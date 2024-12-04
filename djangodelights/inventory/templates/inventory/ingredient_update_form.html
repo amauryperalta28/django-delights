@@ -88,6 +88,7 @@
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary">Create</button>
                     <a class="btn btn-light" href="{% url 'ingredient_list' %}">Cancel</a>
+                    <a class="btn btn-danger float-end" href="{% url 'ingredient_delete' object.pk %}">Delete</a>
                 </form>
 
             </div>
