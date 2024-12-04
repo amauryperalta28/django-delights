@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="page-header">
-    <h3 class="page-title"> Purchases </h3>
+  <h3 class="page-title"> Purchases </h3>
 </div>
 
 <div class="row">
@@ -21,12 +21,15 @@
             </tr>
           </thead>
           <tbody>
+            {% for purchase in purchases %}
             <tr>
-              <td>#1</td>
-              <td>Amaury</td>
-              <td>1</td>
-              <td>2024-12-01</td>
+              <td>{{purchase.id}}</td>
+              <td>{{purchase.customer_name}}</td>
+              <td>{{purchase.menuItemId_id}}</td>
+              <td>{{purchase.date}}</td>
             </tr>
+            {% endfor %}
+
           </tbody>
         </table>
       </div>
