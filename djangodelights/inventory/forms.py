@@ -19,17 +19,8 @@ class MenuItemForm(forms.ModelForm):
         model = MenuItem
         fields = ['title', 'price']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title', 'id': 'id_title'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'aria-label': 'Price (to the nearest dollar)', 'id': 'id_price', 'min':'0'}),
-        }
-
-class MenuItemForm(forms.ModelForm):
-    class Meta:
-        model = MenuItem
-        fields = ['title', 'price']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Menu Item Title'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'})
         }
 
 class RecipeRequirementForm(forms.ModelForm):
@@ -37,15 +28,12 @@ class RecipeRequirementForm(forms.ModelForm):
         model = RecipeRequirement
         fields = ['ingredient', 'quantity']
         widgets = {
-            'ingredient': forms.Select(attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Quantity'}),
+            'ingredient': forms.Select(attrs={'class': 'form-select'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'})
         }
 
-# Inline formset to manage RecipeRequirement
-RecipeRequirementFormSet = inlineformset_factory(
-    MenuItem,
-    RecipeRequirement,
-    form=RecipeRequirementForm,
-    extra=1,  # Number of extra empty forms displayed
-    can_delete=True  # Allow users to delete existing requirements
+RecipeRequirementFormSet = forms.formset_factory(
+    RecipeRequirementForm, 
+    extra=3,
+    can_delete=True
 )

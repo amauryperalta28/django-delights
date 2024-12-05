@@ -1,27 +1,95 @@
 {% extends 'inventory/base.html' %}
 
-{% block content %}
+{% block head %}
+<!-- <title>Create Menu Item</title> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+{% endblock %}
 
+{% block content %}
 <div class="page-header">
-    <h3 class="page-title"> Add Menu items </h3>
+    <h3 class="page-title"> Create Menu Item </h3>
 </div>
 
 <div class="row">
-    <div class="col-lg-6 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-
-                <form method="post">
+                <form method="post" id="menuItemForm">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-gradient-primary me-2">Save changes</button>
-                    <a class="btn btn-light" href="{% url 'menu' %}">Cancel</a>
-          
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Title</label>
+                                {{ menu_item_form.title }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Price</label>
+                                {{ menu_item_form.price }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Recipe Requirements</h3>
+                    <div id="recipe-requirements">
+                        {{ recipe_requirement_formset.management_form }}
+                        {% for form in recipe_requirement_formset %}
+                        <div class="recipe-requirement-form row mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Ingredient</label>
+                                {{ form.ingredient }}
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Quantity</label>
+                                {{ form.quantity }}
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Delete</label>
+                                {{ form.DELETE }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="button" id="add-recipe-requirement" class="btn btn-secondary">
+                        Add Ingredient
+                    </button>
+                    <button type="submit" class="btn btn-primary float-end">Save Menu Item</button>
+
                 </form>
-                
+
             </div>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let recipeRequirementForms = document.getElementById('recipe-requirements');
+        let addButton = document.getElementById('add-recipe-requirement');
+        let totalForms = document.getElementById('id_form-TOTAL_FORMS');
+
+        addButton.addEventListener('click', function () {
+            let formCount = parseInt(totalForms.value);
+            let newForm = recipeRequirementForms.querySelector('.recipe-requirement-form').cloneNode(true);
+
+            // Reset form fields
+            newForm.querySelectorAll('select, input[type="number"], input[type="checkbox"]').forEach(function (elem) {
+                elem.value = '';
+            });
+
+            // Update form indices
+            newForm.innerHTML = newForm.innerHTML.replace(
+                /form-0-/g,
+                `form-${formCount}-`
+            );
+
+            recipeRequirementForms.appendChild(newForm);
+            totalForms.value = formCount + 1;
+        });
+    });
+</script>
 
 {% endblock %}

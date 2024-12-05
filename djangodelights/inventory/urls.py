@@ -9,7 +9,7 @@ urlpatterns = [
     path('ingredients/<int:pk>/update/', views.IngredientsUpdateView.as_view(), name='ingredient_update'),
     path('menu/', views.MenuItemListView.as_view(), name='menu'),
     path('menu/create/', views.MenuItemCreateView.as_view(), name="menu_item_create"),
-    #  path('menu_item/create/', views.MenuItemCreateView.as_view(), name='menu_item_create'),
+    path('menu/<int:pk>/update/', views.MenuItemUpdateView.as_view(), name='menu_item_update'),
     path('purchases/', views.PurchasesListView.as_view(), name='purchases'),
     path('profit_revenue/', views.profit_revenue, name='profit_revenue'),
 ]
