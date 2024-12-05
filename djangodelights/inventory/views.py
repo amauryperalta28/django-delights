@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from .forms import IngredientForm, MenuItemForm, RecipeRequirementFormSet
+from django.db.models import Sum
 
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
 
@@ -122,7 +123,21 @@ class MenuItemUpdateView(View):
         })
 
 def index(request):
+    total_price = Purchase.objects.aggregate(total=Sum('MenuItemId__price'))['total']
     return render(request, 'inventory/index.html')
 
 def profit_revenue(request):
-    return render(request, 'inventory/profit_revenue.html')
+    purchases = Purchase.objects.all()
+    revenue = Purchase.objects.aggregate(total=Sum('MenuItemId__price'))['total']
+    total_profit = sum(purchase.calculate_profit() for purchase in purchases)
+    total_cost = sum(purchase.calculate_cost() for purchase in purchases)
+
+    data = {
+        'revenue': revenue,
+        'total_profit': total_profit,
+        'total_cost': total_cost,
+        
+    }
+   
+    return render(request, 'inventory/profit_revenue.html', {'data': data})
+

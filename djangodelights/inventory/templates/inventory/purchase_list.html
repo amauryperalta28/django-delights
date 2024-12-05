@@ -6,6 +6,8 @@
   <h3 class="page-title"> Purchases </h3>
 </div>
 
+
+
 <div class="row">
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -16,7 +18,7 @@
             <tr>
               <th>Id</th>
               <th>Customer name</th>
-              <th>Menu item id</th>
+              <th>Menu item</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -25,7 +27,7 @@
             <tr>
               <td>{{purchase.id}}</td>
               <td>{{purchase.customer_name}}</td>
-              <td>{{purchase.menuItemId_id}}</td>
+              <td>{{purchase.MenuItemId}}</td>
               <td>{{purchase.date}}</td>
             </tr>
             {% endfor %}
@@ -36,5 +38,7 @@
     </div>
   </div>
 </div>
+
+
 
 {% endblock %}
