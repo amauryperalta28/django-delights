@@ -1,6 +1,6 @@
 from django import forms
 from .models import Ingredient, MenuItem, RecipeRequirement, Purchase
-from django.forms import inlineformset_factory
+from django.contrib.auth.forms import AuthenticationForm
 
 class IngredientForm(forms.ModelForm):
     class Meta:
@@ -68,3 +68,11 @@ class PurchaseForm(forms.ModelForm):
         """Calculate the total price of selected menu items."""
         total_price = sum(item.price for item in self.cleaned_data.get('MenuItems', []))
         return total_price
+    
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
+    )

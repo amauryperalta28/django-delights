@@ -50,6 +50,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Redirect after login
+LOGIN_REDIRECT_URL = '/dashboard'  # Change to the URL you want to redirect to after login
+LOGOUT_REDIRECT_URL = 'login'
+
 ROOT_URLCONF = 'djangodelights.urls'
 
 TEMPLATES = [
