@@ -124,7 +124,9 @@ class MenuItemUpdateView(View):
 
 def index(request):
     purchases = Purchase.objects.all()
-    revenue = Purchase.objects.aggregate(total=Sum('MenuItemId__price'))['total']
+    revenue = Purchase.objects.annotate(
+    total_price=Sum('MenuItems__price')
+).aggregate(total_revenue=Sum('total_price'))['total_revenue']
     total_profit = sum(purchase.calculate_profit() for purchase in purchases)
     total_cost = sum(purchase.calculate_cost() for purchase in purchases)
 
