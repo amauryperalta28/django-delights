@@ -39,6 +39,32 @@ RecipeRequirementFormSet = forms.formset_factory(
 )
 
 class PurchaseForm(forms.ModelForm):
+    MenuItems = forms.ModelMultipleChoiceField(
+        queryset=MenuItem.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="Select Menu Items",
+    )
+
     class Meta:
         model = Purchase
-        fields = ['customer_name', 'MenuItemId']
+        fields = ['customer_name', 'MenuItems']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Filter menu items to only those with sufficient ingredients
+        available_menu_items = []
+        for menu_item in self.fields['MenuItems'].queryset:
+            recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+            if all(req.quantity <= req.ingredient.quantity for req in recipe_requirements):
+                available_menu_items.append(menu_item)
+
+        self.fields['MenuItems'].queryset = MenuItem.objects.filter(pk__in=[item.pk for item in available_menu_items])
+        self.fields['MenuItems'].widget.choices = [
+            (item.pk, f"{item.title} - ${item.price:.2f}") for item in self.fields['MenuItems'].queryset
+        ]
+    
+    def calculate_total_price(self):
+        """Calculate the total price of selected menu items."""
+        total_price = sum(item.price for item in self.cleaned_data.get('MenuItems', []))
+        return total_price

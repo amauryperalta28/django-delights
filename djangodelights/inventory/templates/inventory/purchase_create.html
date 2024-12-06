@@ -10,12 +10,37 @@
     <div class="col-lg-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <div class="mb-3">
+                        <label for="customer_name" class="form-label">Customer Name</label>
+                        {{ form.customer_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="menuitems" class="form-label">Menu Items</label>
+                        <div>
+                            {% for item in form.fields.MenuItems.queryset %}
+                                <div>
+                                    <label>
+                                        <input 
+                                            type="checkbox" 
+                                            name="MenuItems" 
+                                            value="{{ item.id }}" 
+                                            data-price="{{ item.price }}" 
+                                            onchange="updateTotalPrice()"
+                                        >
+                                        {{ item.title }} - ${{ item.price }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="total-price">Total Price: $0.00</strong>
+                    </div>
                     <button type="submit" class="btn btn-primary">Create Purchase</button>
                 </form>
+            
                 {% if form.errors %}
                     <div class="alert alert-danger mt-3">
                         <ul>
@@ -33,4 +58,22 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Function to calculate the total price dynamically
+    function updateTotalPrice() {
+        let total = 0;
+        // Loop through all checked checkboxes and sum their data-price values
+        document.querySelectorAll('input[name="MenuItems"]:checked').forEach(item => {
+            const price = parseFloat(item.dataset.price);
+            if (!isNaN(price)) {
+                total += price;
+            }
+        });
+        // Update the total price display
+        document.getElementById('total-price').innerText = `Total Price: $${total.toFixed(2)}`;
+    }
+</script>
 {% endblock %}

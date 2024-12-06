@@ -12,4 +12,5 @@ urlpatterns = [
     path('menu/<int:pk>/update/', views.MenuItemUpdateView.as_view(), name='menu_item_update'),
     path('purchases/', views.PurchasesListView.as_view(), name='purchases'),
     path('purchases/create/', views.create_purchase, name='create_purchase'),
+    path('purchases/success', views.purchase_success, name='purchase_success'),
 ]

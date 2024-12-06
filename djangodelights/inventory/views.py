@@ -137,45 +137,49 @@ def index(request):
    
     return render(request, 'inventory/index.html', {'data': data})
 
+def purchase_success(request):
+    return render(request, 'inventory/purchase_success.html')
 
 def create_purchase(request):
-    # Step 1: Filter menu items with sufficient ingredients
-    available_menu_items = []
-    menu_items = MenuItem.objects.all()
+    total_price = 0  # Default value for total price
 
-    for menu_item in menu_items:
-        recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
-        can_prepare = all(
-            req.quantity <= req.ingredient.quantity for req in recipe_requirements
-        )
-        if can_prepare:
-            available_menu_items.append(menu_item)
-
-    # Step 2: Handle form submission
     if request.method == 'POST':
         form = PurchaseForm(request.POST)
         if form.is_valid():
-            # Validate the selected menu item
-            menu_item = form.cleaned_data['MenuItemId']
-            recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+            # Calculate the total price of selected menu items
+            total_price = form.calculate_total_price()
+
+            # Validate and process each selected menu item
+            menu_items = form.cleaned_data['MenuItems']
+            insufficient_ingredients = []
+            for menu_item in menu_items:
+                recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+                if not all(req.quantity <= req.ingredient.quantity for req in recipe_requirements):
+                    insufficient_ingredients.append(menu_item.title)
             
-            if all(req.quantity <= req.ingredient.quantity for req in recipe_requirements):
-                # Deduct ingredients
-                for req in recipe_requirements:
-                    req.ingredient.quantity -= req.quantity
-                    req.ingredient.save()
+            if insufficient_ingredients:
+                form.add_error(
+                    'MenuItems',
+                    f"Not enough ingredients to prepare: {', '.join(insufficient_ingredients)}."
+                )
+            else:
+                # Deduct ingredients and create the purchase
+                for menu_item in menu_items:
+                    recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+                    for req in recipe_requirements:
+                        req.ingredient.quantity -= req.quantity
+                        req.ingredient.save()
                 
-                # Create the purchase
                 purchase = form.save(commit=False)
                 purchase.date = now()
                 purchase.save()
+                form.save_m2m()  # Save the many-to-many relationship
 
-                return redirect('purchases')  # Replace with your success URL
-
-            else:
-                form.add_error('MenuItemId', 'Not enough ingredients to prepare this menu item.')
+                return redirect('purchase_success')  # Replace with your success URL
     else:
         form = PurchaseForm()
-        form.fields['MenuItemId'].queryset = MenuItem.objects.filter(pk__in=[item.pk for item in available_menu_items])
 
-    return render(request, 'inventory/purchase_create.html', {'form': form})
+    return render(request, 'inventory/purchase_create.html', {
+        'form': form,
+        'total_price': total_price,  # Pass the total price to the template
+    })

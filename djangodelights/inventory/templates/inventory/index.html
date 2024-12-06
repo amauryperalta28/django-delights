@@ -24,7 +24,7 @@
         <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
         <h4 class="font-weight-normal mb-3">Total Cost <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
         </h4>
-        <h2 class="mb-5">$ {{data.total_cost}}</h2>
+        <h2 class="mb-5">$ {{data.total_cost |floatformat:2}}</h2>
         <!-- <h6 class="card-text">Decreased by 10%</h6> -->
       </div>
     </div>
@@ -36,7 +36,7 @@
         <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
         <h4 class="font-weight-normal mb-3">Total Profit <i class="mdi mdi-diamond mdi-24px float-end"></i>
         </h4>
-        <h2 class="mb-5">${{ data.total_profit }}</h2>
+        <h2 class="mb-5">${{ data.total_profit |floatformat:2 }}</h2>
         <!-- <h6 class="card-text">Increased by 5%</h6> -->
       </div>
     </div>

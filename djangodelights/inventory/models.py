@@ -35,34 +35,32 @@ class RecipeRequirement(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
+# models.py
 class Purchase(models.Model):
     customer_name = models.CharField(max_length=30)
-    MenuItemId = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    MenuItems = models.ManyToManyField(MenuItem)  # Updated to allow multiple items
     date = models.DateTimeField()
-    
-    def __str__(self):
-        return self.MenuItemId.title
-    
-    def calculate_profit(self):
-        # Fetch the related recipe requirements
-        recipe_requirements = RecipeRequirement.objects.filter(menuitem=self.MenuItemId)
-        
-        # Calculate total ingredient cost
-        total_ingredient_cost = sum(
-            req.quantity * req.ingredient.cost for req in recipe_requirements
-        )
-        
-        # Calculate profit
-        profit = self.MenuItemId.price - total_ingredient_cost
-        return profit
-    
-    def calculate_cost(self):
-        # Fetch the related recipe requirements
-        recipe_requirements = RecipeRequirement.objects.filter(menuitem=self.MenuItemId)
-        
-        # Calculate total ingredient cost
-        total_ingredient_cost = sum(
-            req.quantity * req.ingredient.cost for req in recipe_requirements
-        )
 
-        return total_ingredient_cost
+    def __str__(self):
+        return f"Purchase by {self.customer_name} on {self.date.strftime('%Y-%m-%d')}"
+
+    def calculate_profit(self):
+        total_profit = 0
+        for menu_item in self.MenuItems.all():
+            recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+            total_ingredient_cost = sum(
+                req.quantity * req.ingredient.cost for req in recipe_requirements
+            )
+            total_profit += menu_item.price - total_ingredient_cost
+        return total_profit
+
+    def calculate_cost(self):
+        total_cost = 0
+        for menu_item in self.MenuItems.all():
+            recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+            total_ingredient_cost = sum(
+                req.quantity * req.ingredient.cost for req in recipe_requirements
+            )
+            total_cost += total_ingredient_cost
+        return total_cost
+
