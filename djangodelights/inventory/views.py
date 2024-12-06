@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from .forms import IngredientForm, MenuItemForm, RecipeRequirementFormSet
+from .forms import IngredientForm, MenuItemForm, RecipeRequirementFormSet, PurchaseForm
 from django.db.models import Sum
 
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
-
+from django.utils.timezone import now
 # Create your views here.
 
 class IngredientsListView(ListView):
@@ -138,3 +138,44 @@ def index(request):
     return render(request, 'inventory/index.html', {'data': data})
 
 
+def create_purchase(request):
+    # Step 1: Filter menu items with sufficient ingredients
+    available_menu_items = []
+    menu_items = MenuItem.objects.all()
+
+    for menu_item in menu_items:
+        recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+        can_prepare = all(
+            req.quantity <= req.ingredient.quantity for req in recipe_requirements
+        )
+        if can_prepare:
+            available_menu_items.append(menu_item)
+
+    # Step 2: Handle form submission
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            # Validate the selected menu item
+            menu_item = form.cleaned_data['MenuItemId']
+            recipe_requirements = RecipeRequirement.objects.filter(menuitem=menu_item)
+            
+            if all(req.quantity <= req.ingredient.quantity for req in recipe_requirements):
+                # Deduct ingredients
+                for req in recipe_requirements:
+                    req.ingredient.quantity -= req.quantity
+                    req.ingredient.save()
+                
+                # Create the purchase
+                purchase = form.save(commit=False)
+                purchase.date = now()
+                purchase.save()
+
+                return redirect('purchases')  # Replace with your success URL
+
+            else:
+                form.add_error('MenuItemId', 'Not enough ingredients to prepare this menu item.')
+    else:
+        form = PurchaseForm()
+        form.fields['MenuItemId'].queryset = MenuItem.objects.filter(pk__in=[item.pk for item in available_menu_items])
+
+    return render(request, 'inventory/purchase_create.html', {'form': form})

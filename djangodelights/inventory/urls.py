@@ -10,5 +10,6 @@ urlpatterns = [
     path('menu/', views.MenuItemListView.as_view(), name='menu'),
     path('menu/create/', views.MenuItemCreateView.as_view(), name="menu_item_create"),
     path('menu/<int:pk>/update/', views.MenuItemUpdateView.as_view(), name='menu_item_update'),
-    path('purchases/', views.PurchasesListView.as_view(), name='purchases')
+    path('purchases/', views.PurchasesListView.as_view(), name='purchases'),
+    path('purchases/create/', views.create_purchase, name='create_purchase'),
 ]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ingredient, MenuItem, RecipeRequirement
+from .models import Ingredient, MenuItem, RecipeRequirement, Purchase
 from django.forms import inlineformset_factory
 
 class IngredientForm(forms.ModelForm):
@@ -37,3 +37,8 @@ RecipeRequirementFormSet = forms.formset_factory(
     extra=3,
     can_delete=True
 )
+
+class PurchaseForm(forms.ModelForm):
+    class Meta:
+        model = Purchase
+        fields = ['customer_name', 'MenuItemId']
